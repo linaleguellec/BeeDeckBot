@@ -40,6 +40,8 @@ def capture_plan(video_path) :
     cpt_frame = 0 
     
     results_tracker = []
+    H = 0
+    L = 0
     
     # Créer un objet capture vidéo
     cap = cv2.VideoCapture(video_path)
@@ -73,6 +75,9 @@ def capture_plan(video_path) :
     # Crop image
     cropped = frame[int(r[1]):int(r[1]+r[3]), int(r[0]):int(r[0]+r[2])]
     first_frame = cropped
+    
+    H, L, _ = first_frame.shape
+
     
     
     # creation detector 
@@ -119,7 +124,7 @@ def capture_plan(video_path) :
                 
                 cv2.circle(frame_tracker, (int(x1/2 + x2/2), int(y1/2 + y2/2))  , 3, (colors[track_id % len(colors)]), 3)
                 
-                cv2.circle(first_frame, (int(x1/2 + x2/2), int(y1/2 + y2/2))  , 3, (colors[track_id % len(colors)]), 3)
+                cv2.circle(first_frame, (int(x1/2 + x2/2), int(y1/2 + y2/2))  , 3, (colors[track_id % len(colors)]), 1)
                 
                 results_tracker.append([cpt_frame, track_id , int(x1/2 + x2/2) , int(y1/2 + y2/2) ])
     
@@ -139,7 +144,7 @@ def capture_plan(video_path) :
     cpt_frame = 0 
     cv2.destroyAllWindows() 
 
-    return(results_tracker)       
+    return(results_tracker,L, H)       
 
       
             
@@ -252,7 +257,7 @@ def capture_plan(video_path) :
     cpt_frame = 0 
     cv2.destroyAllWindows() 
 
-    return(results_tracker)  
+    return(results_tracker, H, L)  
 
 
 
@@ -334,7 +339,8 @@ def graphique_3D(x,y,z) :
     # ax.set_zlim(0, 800)
 
     # Tracer le nuage de points
-    ax.scatter(x, y, z)
+    #ax.scatter(x, y, z)
+    ax.plot(x, y, z)
 
     # Configurer les étiquettes des axes
     ax.set_xlabel('Axe X')
@@ -395,13 +401,13 @@ os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 # Chemin vers le fichier vidéo
 video_path = "D:/GitHub_BeeDeckBot/BeeDeckBot/videos_abeilles_brut/500_fps/cible_immobile/I1.MP4"
 
-results_tracker = capture_plan(video_path)
+results_tracker, H, L  = capture_plan(video_path)
           
 
 #%% Section 3
 
 
-# results_tracker_court = results_tracker
+# creation d'une liste de résultats sans le pointen haur à gauche 
 a_supprimer = []
 
 k = len(results_tracker)
@@ -414,7 +420,7 @@ results_tracker_court = supprimer_elements(results_tracker, a_supprimer)
 a_supprimer = []
 
 
-
+# recupération des id des abeilles 
 id_list = []
 k = len(results_tracker_court)
 for i in range(0, k - 1) : 
@@ -423,11 +429,9 @@ for i in range(0, k - 1) :
 
 indices_abeilles = deux_nombres_plus_frequents(id_list)
 
+
+# création d'une liste avec que les results des 2 abeilles pertinantes 
 l = len(indices_abeilles)
-
-
-
-
 for i in range(0, k - 1) :
     for j in range (0, l -1) : 
         if (results_tracker[i][1] != indices_abeilles[j]):
@@ -437,8 +441,89 @@ for i in range(0, k - 1) :
 results_tracker_court = supprimer_elements(results_tracker_court, a_supprimer)
 a_supprimer = []        
         
+
+
+#%% Section 4
+
+X = []
+Y = []
+Z = [] 
+k = len(results_tracker_court)
+xmoy1 = 0
+xmoy2 = 0
+c1 = 0 
+c2 = 0 
+a = 0 
+for i in range(0, k - 1):
+    if (results_tracker_court[i][1] == indices_abeilles[0] ) :
+        c1 = c1 + 1 
+        xmoy1 = xmoy1 + results_tracker_court[i][2]
+        a = 1 
+    
+
+    if (results_tracker_court[i][1] == indices_abeilles[1] ) :
+        c2 = c2 + 1 
+        xmoy2 = xmoy2 + results_tracker_court[i][2]
+        a = 2 
+    
+    if (a == 1):
+        xmoy1 = xmoy1/c1
+    if (a == 2): 
+        xmoy2 = xmoy2/c2
     
     
+    
+if ( xmoy1 > xmoy2) : 
+    for i in range(0, k - 1):
+        # partie du haut 
+        if (results_tracker_court[i][1] == indices_abeilles[0] ) :
+            z = - results_tracker_court[i][2] + H 
+            x = results_tracker_court[i][3]
+            Z.append(z)
+            X.append(x)
+        
+        # partie du bas 
+        if (results_tracker_court[i][1] == indices_abeilles[1] ) :
+            y = results_tracker_court[i][2]
+            Y.append(y)
+
+            
+n = min(len(X), len(Y), len(Z))
+X = X[:n] 
+Y = Y[:n]
+Z = Z[:n]  
+
+# convertion pixels en mm hauteur de la boite réelle 
+Xmm = []
+Ymm = []
+Zmm = [] 
+
+h_boite = 1000 
+l_boite = 650
+L_boite = 550
+
+for x in X : 
+    x = (x/L)*l_boite
+    Xmm.append(x)
+
+for y in Y : 
+    y = (y/H)*L_boite
+    Ymm.append(y)
+    
+
+for z in Z : 
+    z = (z/H)*h_boite
+    Zmm.append(z)
+    
+    
+
+#%% Section 5         
+graphique_3D(X, Y, Z)
+
+graphique_3D(Xmm, Ymm, Zmm)
+    
+    
+
     
 
 
