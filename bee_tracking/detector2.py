@@ -31,7 +31,7 @@ class Detector1(object):
         cv.drawContours(frame, contours, -1, (0,255,255), 2)
         
         detections = []
-        detections.append([0, 0 , 10, 50, 1])
+        detections.append([0, 0 , 10, 50, 0])
         
         for cnt in contours:
           

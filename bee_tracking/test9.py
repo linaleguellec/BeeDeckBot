@@ -10,6 +10,9 @@ animation 3D
 fonctionne le 24 juillet 
 
 """
+
+#%% Section 0
+
 import cv2
 import numpy as np
 from detector2 import Detector1
@@ -19,11 +22,12 @@ from tracker import Tracker
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from mpl_toolkits.mplot3d import Axes3D
+from collections import Counter
+#%% Section 1 : les fonctions 
 
-
-###################### fonctions ##########################
-
-
+# =============================================================================
+# debut des fonctions 
+# =============================================================================
 
 def capture_plan(video_path) : 
     
@@ -358,11 +362,31 @@ def graphique_2D(x,y):
     
     
     
-
+def deux_nombres_plus_frequents(lst):
+    # Compter les occurrences des nombres dans la liste
+    compteur = Counter(lst)
     
-###################### fin fonctions ##########################
+    # Trier les nombres en fonction de leurs occurrences (du plus fréquent au moins fréquent)
+    nombres_tries = sorted(compteur, key=compteur.get, reverse=True)
+    
+    # Retourner les deux nombres les plus fréquents
+    return nombres_tries[:2]
+    
+
+def supprimer_elements(lst, elements_a_supprimer):
+    nouvelle_liste = [element for element in lst if element not in elements_a_supprimer]
+    return nouvelle_liste
 
 
+# =============================================================================
+# fin des fonctions
+# =============================================================================
+
+
+
+
+
+#%% Section 2
 
 # pour ne pas avoir un message d'erreur 
 os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
@@ -373,19 +397,53 @@ video_path = "D:/GitHub_BeeDeckBot/BeeDeckBot/videos_abeilles_brut/500_fps/cible
 
 results_tracker = capture_plan(video_path)
           
-X = []
-Y = []
+
+#%% Section 3
+
+
+# results_tracker_court = results_tracker
+a_supprimer = []
 
 k = len(results_tracker)
 
 for i in range(0, k - 1) : 
-    x1 = results_tracker[i][2]
-    y1 = results_tracker[i][3]
-    
-    X.append(x1)
-    Y.append(-y1)
+        if (results_tracker[i][2] == 5 and results_tracker[i][3] == 25):
+            a_supprimer.append(results_tracker[i])
 
-graphique_2D(X, Y)
+results_tracker_court = supprimer_elements(results_tracker, a_supprimer)
+a_supprimer = []
+
+
+
+id_list = []
+k = len(results_tracker_court)
+for i in range(0, k - 1) : 
+    id_list.append(results_tracker_court[i][1])
+
+
+indices_abeilles = deux_nombres_plus_frequents(id_list)
+
+l = len(indices_abeilles)
+
+
+
+
+for i in range(0, k - 1) :
+    for j in range (0, l -1) : 
+        if (results_tracker[i][1] != indices_abeilles[j]):
+            a_supprimer.append(results_tracker[i])
+            
+            
+results_tracker_court = supprimer_elements(results_tracker_court, a_supprimer)
+a_supprimer = []        
+        
+    
+    
+    
+
+
+
+
   
     
     
