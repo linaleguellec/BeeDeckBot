@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 """
 Created on Sun Jul  9 18:48:00 2023
@@ -6,12 +7,12 @@ Created on Sun Jul  9 18:48:00 2023
 
 animation 3D 
 
-fonctionne le 28 juillet (fin du stage)
+fonctionne le 24 juillet 
 
 """
 import cv2
 import numpy as np
-from detector import Detector4 , Detector1
+from detector2 import Detector1
 import os
 import random
 from tracker import Tracker
@@ -22,16 +23,11 @@ from mpl_toolkits.mplot3d import Axes3D
 
 ###################### fonctions ##########################
 
-def echelle(x,y,k1,k2) : 
-    
-    x = k1*x
-    y = k2*y
 
-def capture_plan_X_Y() : 
-    
-    # Chemin vers le fichier vidéo
-    video_path = "D:/projet_beedeckbot/codes_python_v3/videos/video2.mp4"
 
+def capture_plan(video_path) : 
+    
+    
     # mode debug 
     DEBUG=0
 
@@ -106,7 +102,7 @@ def capture_plan_X_Y() :
             frame_tracker = current=np.copy(cropped)
             
             
-            detections, frame_detection = MyDetector.detect(cropped)  
+            detections = MyDetector.detect(cropped)  
             
             tracker.update(cropped, detections)
             
@@ -124,11 +120,9 @@ def capture_plan_X_Y() :
                 results_tracker.append([cpt_frame, track_id , int(x1/2 + x2/2) , int(y1/2 + y2/2) ])
     
             
-            cv2.imshow("detection",frame_detection) 
             cv2.imshow("tracker",frame_tracker) 
             cv2.imshow("trajectoire",first_frame)
             
-            #print(results_tracker)
         
         k = cv2.waitKey(50);
         if k == 27: #ascii ESC
@@ -142,13 +136,11 @@ def capture_plan_X_Y() :
     cv2.destroyAllWindows() 
 
     return(results_tracker)       
-        
-        
-def capture_plan_X_Z() : 
-    
-    # Chemin vers le fichier vidéo
-    video_path = "D:/projet_beedeckbot/codes_python_v3/videos/video2.mp4"
 
+      
+            
+
+    
     # mode debug 
     DEBUG=0
 
@@ -256,8 +248,10 @@ def capture_plan_X_Z() :
     cpt_frame = 0 
     cv2.destroyAllWindows() 
 
-    return(results_tracker)         
-    
+    return(results_tracker)  
+
+
+
 def animation_2D(X,Y) :         
     # Initialiser la figure et les axes
     fig, ax = plt.subplots()
@@ -331,9 +325,9 @@ def graphique_3D(x,y,z) :
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
     
-    ax.set_xlim(0, 800)
-    ax.set_ylim(0, -800)
-    ax.set_zlim(0, 800)
+    # ax.set_xlim(0, 800)
+    # ax.set_ylim(0, -800)
+    # ax.set_zlim(0, 800)
 
     # Tracer le nuage de points
     ax.scatter(x, y, z)
@@ -374,23 +368,35 @@ def graphique_2D(x,y):
 os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 
 
-results_tracker_x_y = capture_plan_X_Y()
-results_tracker_x_z = capture_plan_X_Z()
+# Chemin vers le fichier vidéo
+video_path = "D:/GitHub_BeeDeckBot/BeeDeckBot/videos_abeilles_brut/500_fps/cible_immobile/I1.MP4"
+
+results_tracker_x_z = capture_plan(video_path)
+results_tracker_x_y = capture_plan(video_path)
+
             
-x = []
-y = []
-z = []
+X = []
+Y = []
+Z = []
 
 
 k = min( len(results_tracker_x_y), len(results_tracker_x_z) )
 
 for i in range(0, k - 1) : 
-    y.append(-results_tracker_x_y[i][2])
-    x.append(results_tracker_x_y[i][3])
-    z.append(results_tracker_x_z[i][2])
+    x1 = results_tracker_x_z[i][2]
+    y1 = results_tracker_x_z[i][3]
+    x2 = results_tracker_x_y[i][2]
+    X.append(y1)
+    Y.append(x2)
+    Z.append(x1)
     
 
-graphique_3D(x, y, z)
+
+X = X*2
+Y = Y*2
+Z = Z*2
+
+graphique_3D(X, Y, Z)
   
     
     
