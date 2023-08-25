@@ -23,6 +23,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from mpl_toolkits.mplot3d import Axes3D
 from collections import Counter
+
 #%% Section 1 : les fonctions 
 
 # =============================================================================
@@ -296,13 +297,56 @@ def animation_3D(x,y,z) :
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
     
-    # Initialiser le nuage de points
-    points, = ax.plot([], [], [], 'bo')
+    ax.set_xlim(0, 550)
+    ax.set_ylim(0, 450)
+    ax.set_zlim(0, 913)
+
+    # Tracer le nuage de points
+    #ax.scatter(x, y, z)
+    # ax.plot(x, y, z, color='green', linewidth=3)
+
+    # Configurer les étiquettes des axes en bleu
+    ax.set_xlabel('X [mm]', color='blue')
+    ax.set_ylabel('Y [mm]', color='blue')
+    ax.set_zlabel('Z [mm]', color='blue')
+
+
+    def arrow3d(ax, x, y, z, dx, dy, dz, color, label):
+        ax.quiver(x, y, z, dx, dy, dz, color=color, label=label, arrow_length_ratio=0.1)
     
-    # Configurer les limites des axes
-    ax.set_xlim(0, 800)
-    ax.set_ylim(0, 800)
-    ax.set_zlim(0, 800)
+    # Ajouter des flèches aux extrémités des axes
+    arrow3d(ax, 0, 0, 0, 550, 0, 0, color='blue', label='$X$')
+    arrow3d(ax, 0, 0, 0, 0, 450, 0, color='blue', label='$Y$')
+    arrow3d(ax, 0, 0, 0, 0, 0, 913, color='blue', label='$Z$')
+    
+    # Tracer les faces du parallélépipède
+
+    ax.plot([0, 550], [0, 0], [0, 0], color='black', linewidth=3)
+    ax.plot([0, 0], [0, 450], [0, 0], color='black', linewidth=3)
+    ax.plot([0, 0], [0, 0], [0, 913], color='black', linewidth=3)
+    ax.plot([0, 0], [0, 450], [913, 913], color='black', linewidth=3)
+    ax.plot([550, 550], [0, 450], [913, 913], color='black', linewidth=3)
+    ax.plot([550, 550], [0, 450], [0, 0], color='black', linewidth=3)
+    ax.plot([0, 550], [0, 0], [913, 913], color='black', linewidth=3)
+    ax.plot([550, 550], [450, 450], [0, 913], color='black', linewidth=3)
+    ax.plot([550, 550], [0, 0], [913, 0], color='black', linewidth=3)
+    ax.plot([0, 550], [450, 450], [0, 0], color='black', linewidth=3)
+    ax.plot([0, 550], [450, 450], [913, 913], color='black', linewidth=3)
+    ax.plot([0, 0], [450, 450], [913, 0], color='black', linewidth=3)
+    
+    ax.plot([550, 550], [209, 237], [464, 464], color='black', linewidth=2)
+    ax.plot([550, 550], [209, 237], [444, 444], color='black', linewidth=2)
+    ax.plot([550, 550], [209, 209], [464, 444], color='black', linewidth=2)
+    ax.plot([550, 550], [237, 237], [464, 444], color='black', linewidth=2)
+    
+    
+    
+    
+    # Initialiser le nuage de points
+    # points, = ax.plot([], [], [], 'bo')
+    
+    # Initialiser le nuage de points avec des points verts de petite taille
+    points, = ax.plot([], [], [], 'go', markersize=3)
     
     # Fonction d'initialisation de l'animation
     def init():
@@ -311,18 +355,42 @@ def animation_3D(x,y,z) :
         return points,
     
     # Fonction d'animation pour mettre à jour les points progressivement
+    # def update(frame):
+    #     if frame < len(x):
+    #         # Mettre à jour les coordonnées des points jusqu'à la frame actuelle
+    #         points.set_data(x[:frame+1], y[:frame+1])
+    #         points.set_3d_properties(z[:frame+1])
+    #     return points,
+    
+    # Créer une liste pour stocker les coordonnées des points tracés
+    all_x = []
+    all_y = []
+    all_z = []
+    
+    # Fonction d'animation pour mettre à jour les points progressivement
     def update(frame):
         if frame < len(x):
-            # Mettre à jour les coordonnées des points jusqu'à la frame actuelle
-            points.set_data(x[:frame+1], y[:frame+1])
-            points.set_3d_properties(z[:frame+1])
+            # Ajouter les coordonnées du point actuel à la liste
+            all_x.append(x[frame])
+            all_y.append(y[frame])
+            all_z.append(z[frame])
+            # Mettre à jour les coordonnées de tous les points jusqu'à la frame actuelle
+            points.set_data(all_x, all_y)
+            points.set_3d_properties(all_z)
         return points,
+    
+    
+    # Désactiver l'interactivité de la souris
+    plt.ioff()
     
     # Créer l'animation
     ani = animation.FuncAnimation(fig, update, frames=len(x)+1, init_func=init, interval=200, blit=True)
     
     # Afficher l'animation 3D
     plt.show()
+    
+    # Réactiver l'interactivité de la souris
+    plt.ion()
     
     k = cv2.waitKey(50);
     if k == 27: #ascii ESC
@@ -334,19 +402,50 @@ def graphique_3D(x,y,z) :
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
     
-    # ax.set_xlim(0, 800)
-    # ax.set_ylim(0, -800)
-    # ax.set_zlim(0, 800)
+    ax.set_xlim(0, 550)
+    ax.set_ylim(0, 450)
+    ax.set_zlim(0, 913)
 
     # Tracer le nuage de points
     #ax.scatter(x, y, z)
-    ax.plot(x, y, z)
+    ax.plot(x, y, z, color='green', linewidth=3)
 
-    # Configurer les étiquettes des axes
-    ax.set_xlabel('Axe X')
-    ax.set_ylabel('Axe Y')
-    ax.set_zlabel('Axe Z')
+    # Configurer les étiquettes des axes en bleu
+    ax.set_xlabel('X [mm]', color='blue')
+    ax.set_ylabel('Y [mm]', color='blue')
+    ax.set_zlabel('Z [mm]', color='blue')
 
+
+    def arrow3d(ax, x, y, z, dx, dy, dz, color, label):
+        ax.quiver(x, y, z, dx, dy, dz, color=color, label=label, arrow_length_ratio=0.1)
+    
+    # Ajouter des flèches aux extrémités des axes
+    arrow3d(ax, 0, 0, 0, 550, 0, 0, color='blue', label='$X$')
+    arrow3d(ax, 0, 0, 0, 0, 450, 0, color='blue', label='$Y$')
+    arrow3d(ax, 0, 0, 0, 0, 0, 913, color='blue', label='$Z$')
+    
+    # Tracer les faces du parallélépipède
+
+    ax.plot([0, 550], [0, 0], [0, 0], color='black', linewidth=3)
+    ax.plot([0, 0], [0, 450], [0, 0], color='black', linewidth=3)
+    ax.plot([0, 0], [0, 0], [0, 913], color='black', linewidth=3)
+    ax.plot([0, 0], [0, 450], [913, 913], color='black', linewidth=3)
+    ax.plot([550, 550], [0, 450], [913, 913], color='black', linewidth=3)
+    ax.plot([550, 550], [0, 450], [0, 0], color='black', linewidth=3)
+    ax.plot([0, 550], [0, 0], [913, 913], color='black', linewidth=3)
+    ax.plot([550, 550], [450, 450], [0, 913], color='black', linewidth=3)
+    ax.plot([550, 550], [0, 0], [913, 0], color='black', linewidth=3)
+    ax.plot([0, 550], [450, 450], [0, 0], color='black', linewidth=3)
+    ax.plot([0, 550], [450, 450], [913, 913], color='black', linewidth=3)
+    ax.plot([0, 0], [450, 450], [913, 0], color='black', linewidth=3)
+    
+    ax.plot([550, 550], [209, 237], [464, 464], color='black', linewidth=2)
+    ax.plot([550, 550], [209, 237], [444, 444], color='black', linewidth=2)
+    ax.plot([550, 550], [209, 209], [464, 444], color='black', linewidth=2)
+    ax.plot([550, 550], [237, 237], [464, 444], color='black', linewidth=2)
+    
+    
+    
     # Afficher le graphique
     plt.show()
 
@@ -478,7 +577,7 @@ if ( xmoy1 > xmoy2) :
         # partie du haut 
         if (results_tracker_court[i][1] == indices_abeilles[0] ) :
             z = - results_tracker_court[i][2] + H 
-            x = results_tracker_court[i][3]
+            x = - results_tracker_court[i][3] + L 
             Z.append(z)
             X.append(x)
         
@@ -498,9 +597,9 @@ Xmm = []
 Ymm = []
 Zmm = [] 
 
-h_boite = 1000 
-l_boite = 650
-L_boite = 550
+h_boite = 913
+l_boite = 550
+L_boite = 450
 
 for x in X : 
     x = (x/L)*l_boite
@@ -518,12 +617,10 @@ for z in Z :
     
 
 #%% Section 5         
-graphique_3D(X, Y, Z)
-
 graphique_3D(Xmm, Ymm, Zmm)
     
     
-
+# animation_3D(Xmm, Ymm, Zmm)
     
 
 
