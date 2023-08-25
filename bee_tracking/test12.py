@@ -23,7 +23,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from mpl_toolkits.mplot3d import Axes3D
 from collections import Counter
-import scipy.io
+
 
 #%% Section 
 
@@ -48,7 +48,7 @@ def capture_plan(video_path) :
     global X_separation
     
     # mode debug 
-    DEBUG=0
+    DEBUG = 1
 
     playVideo = True
     
@@ -395,7 +395,7 @@ os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 
 
 # Chemin vers le fichier vidéo
-video_path = "D:/GitHub_BeeDeckBot/BeeDeckBot/videos_abeilles_brut/500_fps/cible_immobile/I1.MP4"
+video_path = "D:/GitHub_BeeDeckBot/BeeDeckBot/videos_abeilles_brut/500_fps/grande_cible/G1.MP4"
 
 
 results_tracker, H, L = capture_plan(video_path)
@@ -504,13 +504,6 @@ graphique_3D(Xmm, Ymm, Zmm)
     
     
 # animation_3D(Xmm, Ymm, Zmm)
-
-#%% enregistrement mathlab 
-
-scipy.io.savemat('X.mat', {'Xmm': Xmm})
-scipy.io.savemat('Y.mat', {'Ymm': Ymm})
-scipy.io.savemat('Z.mat', {'Zmm': Zmm})
-
     
 
 
