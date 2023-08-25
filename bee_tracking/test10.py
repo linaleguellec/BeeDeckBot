@@ -5,13 +5,39 @@ Created on Thu Aug 24 18:38:15 2023
 @author: linal
 """
 
-def supprimer_elements(lst, elements_a_supprimer):
-    nouvelle_liste = [element for element in lst if element not in elements_a_supprimer]
-    return nouvelle_liste
+import cv2
 
-# Exemple d'utilisation
-ma_liste = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-elements_a_supprimer = [2, 4, 6, 8]
-nouvelle_liste = supprimer_elements(ma_liste, elements_a_supprimer)
-print("Nouvelle liste après suppression :", nouvelle_liste)
+# Variable globale pour enregistrer la position de la souris
+X_separation = 10
+
+def get_mouse_position(event, x, y, flags, param):
+    global X_separation
+    if event == cv2.EVENT_LBUTTONDOWN:
+        X_separation = x
+        print('lina')
+
+        
+
+# Chemin vers le fichier vidéo
+video_path = "D:/GitHub_BeeDeckBot/BeeDeckBot/videos_abeilles_brut/500_fps/cible_immobile/I1.MP4"
+cap = cv2.VideoCapture(video_path)
+
+cv2.namedWindow("Video")
+cv2.setMouseCallback("Video", get_mouse_position)
+
+while cap.isOpened():
+    ret, frame = cap.read()
+    if not ret:
+        break
+    
+    cv2.imshow("Video", frame)
+    
+    key = cv2.waitKey(1)
+    if key == 27:  # Touche ESC pour quitter
+        break
+
+cap.release()
+cv2.destroyAllWindows()
+
+
 

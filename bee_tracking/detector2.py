@@ -40,8 +40,8 @@ class Detector1(object):
             x = int(x)
             y = int(y)
             radius = int(radius)
-            cv.circle(frame, (x, y), radius, (0, 255, 0), 2)
-            cv.rectangle(frame, (x-radius, y - radius), (x+radius, y + radius), (0, 0, 255), 2)
+            cv.circle(frame, (x, y), 2, (0, 255, 0), 2)
+            # cv.rectangle(frame, (x-radius, y - radius), (x+radius, y + radius), (0, 0, 255), 2)
             detections.append([x-radius, y - radius, x+radius , y + radius , 1])
 
             
