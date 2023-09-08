@@ -3,11 +3,16 @@
 """
 Created on Sun Jul  9 18:48:00 2023
 
-@author: linal
+@author: Lina Le Guellec 
 
-animation 3D 
+-This code plot the 3D trajectory of a bee from a video taken with the metallic structure
+-This code only works for a stationary flower
+-This code does not work well for videos with a moving flower and several bees filmed in the flight chamber  
+-The video must be taken using the camera's red filter
 
-fonctionne le 25 juillet pour une fleur immobile
+INPUT = absolute video path 
+
+OUTPUT :  3d graphics and 3d animation of the bee, Coordinates of the bee in mm  
 
 """
 
@@ -26,12 +31,10 @@ from collections import Counter
 
 
 
-#%% Section 1 : fonctions
+#%% Section 1
 
 # =============================================================================
-# fin des fonctions
-# =============================================================================
-
+# fonctions
 
 
 def get_mouse_position(event, x, y, flags, param):
@@ -42,6 +45,24 @@ def get_mouse_position(event, x, y, flags, param):
         
 
 def capture_plan(video_path) : 
+    """
+    
+    Parameters
+    ----------
+    video_path : char 
+    absolute path video 
+
+    Returns
+    -------
+    results_tracker : list
+    [[n°frame, id, x_ose_pixels, y_pose_pixels ], [n°frame, id, x_ose_pixels, y_pose_pixels ], [n°frame, id, x_ose_pixels, y_pose_pixels ] .... ]
+    L : int
+    length of the cropped image
+    
+    H : int
+    width of the cropped image
+
+    """
     
     global X_separation
     
@@ -73,7 +94,7 @@ def capture_plan(video_path) :
 
     cpt_frame = cpt_frame + 1 
     time = cpt_frame/fps
-    #print(cpt_frame)
+
     
     if not ok:
         print('Failed to read video')
@@ -86,7 +107,6 @@ def capture_plan(video_path) :
     
     
     # Crop image
-  
     cropped = frame[int(r[1]):int(r[1]+r[3]), int(r[0]):int(r[0]+r[2])]
     first_frame = cropped
     
@@ -111,7 +131,7 @@ def capture_plan(video_path) :
     # creation du tracker    
     tracker = Tracker()
     
-    # couleur au hasard pour encadrer chaque nouvelle abeille 
+    # couleur au hasard pour encadrer chaque nouvelles abeilles 
     colors = [(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)) for j in range(10)]
     
     while True:
@@ -172,7 +192,21 @@ def capture_plan(video_path) :
     return(results_tracker,L, H)       
 
     
-def animation_3D(x,y,z) :         
+def animation_3D(x,y,z) : 
+    """
+        
+        Parameters
+        ----------
+        x : int 
+        y : int 
+        z : int 
+        x, y, z : 3D coordinate of the bee in px or mm 
+    
+        Returns
+        -------
+        None , 3d animation 
+    
+    """        
 
     # Créer la figure et les axes 3D
     fig = plt.figure()
@@ -198,7 +232,6 @@ def animation_3D(x,y,z) :
     arrow3d(ax, 0, 0, 0, 0, 0, 913, color='blue', label='$Z$')
     
     # Tracer les faces du parallélépipède
-
     ax.plot([0, 550], [0, 0], [0, 0], color='black', linewidth=3)
     ax.plot([0, 0], [0, 450], [0, 0], color='black', linewidth=3)
     ax.plot([0, 0], [0, 0], [0, 913], color='black', linewidth=3)
@@ -219,8 +252,6 @@ def animation_3D(x,y,z) :
     
     
     
-    
-
     
     # Initialiser le nuage de points avec des points verts de petite taille
     points, = ax.plot([], [], [], 'go', markersize=3)
@@ -268,7 +299,20 @@ def animation_3D(x,y,z) :
 
 
 def graphique_3D(x,y,z) : 
-    # Créer la figure et les axes 3D
+   
+    """
+    Parameters
+    ----------
+    x : int 
+    y : int 
+    z : int 
+    x, y, z : 3D coordinate of the bee in px or mm 
+    
+    Returns
+    -------
+    None , 3d graph 
+    """
+    
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
     
@@ -276,7 +320,7 @@ def graphique_3D(x,y,z) :
     ax.set_ylim(0, 450)
     ax.set_zlim(0, 913)
 
-    # Tracer le nuage de points
+    # Tracer le nuage de points ou graphique 
     ax.scatter(x, y, z)
     # ax.plot(x, y, z, color='green', linewidth=3)
 
@@ -295,7 +339,6 @@ def graphique_3D(x,y,z) :
     arrow3d(ax, 0, 0, 0, 0, 0, 913, color='blue', label='$Z$')
     
     # Tracer les faces du parallélépipède
-
     ax.plot([0, 550], [0, 0], [0, 0], color='black', linewidth=3)
     ax.plot([0, 0], [0, 450], [0, 0], color='black', linewidth=3)
     ax.plot([0, 0], [0, 0], [0, 913], color='black', linewidth=3)
@@ -334,16 +377,14 @@ def supprimer_elements(lst, elements_a_supprimer):
     return nouvelle_liste
 
 
-
 # =============================================================================
-# fin des fonctions
-# =============================================================================
-
-
-
 
 
 #%% Section 2
+
+# =============================================================================
+# tracking et suivi de l'abeille
+
 
 X_separation = 10
 
@@ -357,11 +398,16 @@ video_path = "D:/GitHub_BeeDeckBot/BeeDeckBot/Videos/I1.MP4"
 
 results_tracker, H, L = capture_plan(video_path)
           
+# =============================================================================
 
-#%% suprime ceux du début 
+
+#%% Section 4  
+
+# =============================================================================
+# supression des éléments indésirables de results_tracker
+# results_tracker_court = liste de résults_tracker sans les éléments indésirables 
 
 
-# creation d'une liste de résultats sans le pointen haur à gauche 
 a_supprimer = []
 
 k = len(results_tracker)
@@ -373,9 +419,13 @@ for i in range(0, k - 1) :
 results_tracker_court = supprimer_elements(results_tracker, a_supprimer)
 a_supprimer = []
 
-
+# =============================================================================
     
 #%% Section 5 
+
+# =============================================================================
+# creation des coordonnées 3 de l'abeille X, Y, Z en pixels à partir de results_tracker_court
+
 
 nb_frame = results_tracker_court[-1][0]
 
@@ -409,8 +459,14 @@ X = X[:n]
 Y = Y[:n]
 Z = Z[:n]  
 
+# =============================================================================
 
-#%%  enlever les 1 
+#%% Section 6 
+
+# =============================================================================
+# Supression des éléments indésirables des listes X, Y, Z
+
+
 for i in range(0, nb_frame - 1): 
     if (X[i] == 1 or Y[i] == 1 or Z[i] == 1) : 
         X[i] = 1 
@@ -420,19 +476,24 @@ for i in range(0, nb_frame - 1):
 X = [element for element in X if element != 1]
 Y = [element for element in Y if element != 1]
 Z = [element for element in Z if element != 1]
-        # X.pop(i)
-        # Y.pop(i)
-        # Z.pop(i)
-        
-        
+  
+             
 n = min(len(X), len(Y), len(Z))
 X = X[:n] 
 Y = Y[:n]
 Z = Z[:n]  
 
-#%% convertion pixels en mm 
+# =============================================================================
 
-# convertion pixels en mm hauteur de la boite réelle 
+
+#%% Section 7 
+
+# =============================================================================
+# convertion des coordonnées 3D de l'abeille en pixel (X, Y, Z) en 
+# corrdonnées 3D de l'abeille dans le monde réel en mm (Xmm, Ymm, Zmm)
+
+
+
 Xmm = []
 Ymm = []
 Zmm = [] 
@@ -453,16 +514,19 @@ for y in Y :
 for z in Z : 
     z = (z/H)*h_boite
     Zmm.append(z)
-    
-    
+      
+# =============================================================================
 
-#%% graphiques        
+
+
+#%% Section 8 
+# =============================================================================
+# tracage des graphiques et des animations       
+
 graphique_3D(Xmm, Ymm, Zmm)
-    
-    
 animation_3D(Xmm, Ymm, Zmm)
     
-
+# =============================================================================
 
 
 
