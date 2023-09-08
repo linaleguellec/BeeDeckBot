@@ -41,7 +41,6 @@ def get_mouse_position(event, x, y, flags, param):
     global X_separation
     if event == cv2.EVENT_LBUTTONDOWN:
         X_separation = x 
-        print(f"Position de la souris : x = {x}")
         
 
 def capture_plan(video_path) : 
@@ -102,6 +101,7 @@ def capture_plan(video_path) :
         
         
     # Select ROI
+    print("Please select the area of interest. Then press enter.")
     r = cv2.selectROI("detection",frame)
     cv2.destroyWindow("detection")
     
@@ -112,6 +112,7 @@ def capture_plan(video_path) :
     
     H, L, _ = first_frame.shape
     
+    print("Please click on the separation zone between the left and right parts of the flight chamber. Then press enter.")
     cv2.namedWindow("crop", cv2.WINDOW_NORMAL)
     cv2.setMouseCallback("crop", get_mouse_position)
     
@@ -121,9 +122,9 @@ def capture_plan(video_path) :
     cv2.waitKey(0)
     
     cv2.destroyWindow("crop")
-    print(f"Position de la souris 2 : x = {X_separation}")
+    print(f"Position of the mouse : x = {X_separation}")
+    print("The bee is being detected. Wait for the procedure to finish or press escape")
 
-    
     
     # creation detector 
     MyDetector = Detector1(DEBUG)
