@@ -1,10 +1,12 @@
 
 /*
- * ce code fonctionne le 2 juin 2023 
- * sincronise la porte rfid et le robot fleur
- * chois des phase aleatoire 
- * sincronisation des phases et frequence pour allure de fleur
+ * author : Lina Le Guellec
+ * date : 08/09/2023
+ * This code sets the 2 axes of the robotic flower in motion. 
+ * The robotic flower imitates the movement of a flower.
+ * The frequencies, amplitudes and phase of the horizontal and vertical axes are chosen randomly each time the switch is triggered.
  */
+
 
 
 #include <Arduino.h>
