@@ -1,6 +1,12 @@
 """
 
-fonctionne le 20 juillet
+This code is only a test of how well YOLOv8's people detection works.
+
+In the future, the YOLOv8 people recognition learning model should be replaced by a custom bee recognition learning model. 
+
+Once this code is capable of finding bees, it can be integrated into the detector.py file.
+
+
 """
 
 import os
@@ -17,8 +23,8 @@ os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 from tracker import Tracker
 
 
-video_path = "D:/projet_beedeckbot/codes_python_v3/videos/people.mp4"
-video_out_path = "D:/projet_beedeckbot/codes_python_v3/sortie/people_out.mp4"
+video_path = "D:/GitHub_BeeDeckBot/BeeDeckBot/Videos/people.mp4"
+video_out_path = "D:/GitHub_BeeDeckBot/BeeDeckBot/Videos/peopleOut.mp4"
 
 cap = cv2.VideoCapture(video_path)
 ret, frame = cap.read()
