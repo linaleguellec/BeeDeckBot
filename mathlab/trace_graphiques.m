@@ -77,7 +77,8 @@ fill3(x2, y2, z, 'g');  % Utilisez 'b' pour remplir le cercle en bleu
 
 hold off
 
-view(3); % Affiche la vue en 3D
+view(-151, 15);
+
 
 %%
 
@@ -169,9 +170,10 @@ for i = 1:length(Xmm)
     fill3(x1, y1, z, 'b');  % Utilisez 'b' pour remplir le cercle en bleu
     fill3(x2, y2, z, 'g');  % Utilisez 'b' pour remplir le cercle en bleu
 
+    view(-151, 15);
     
     % Mettez en pause pour contrôler la vitesse de l'animation (ajustez la valeur en fonction de la vitesse souhaitée)
-    pause(0.02);
+    pause(0.002);
     
     % Capturez la figure pour enregistrer l'animation
     frame = getframe(gcf);
