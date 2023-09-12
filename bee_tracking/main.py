@@ -28,6 +28,9 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from mpl_toolkits.mplot3d import Axes3D
 from collections import Counter
+import scipy.io as sio
+
+
 
 
 
@@ -529,12 +532,10 @@ animation_3D(Xmm, Ymm, Zmm)
     
 # =============================================================================
 
-
-
+#%% Section 10 
+    
+sio.savemat('trajectoire.mat', {'Xmm': Xmm, 'Ymm': Ymm, 'Zmm': Zmm})
   
-    
-    
-    
     
     
     
