@@ -11,9 +11,9 @@
 - Open the main.py file.
 - In the code, specify the path to your bee video in MP4 format. 
 - Run code.
-- A window appears with the first frame of your video. Select the area of interest like ![this example : ](https://github.com/linaleguellec/BeeDeckBot/blob/main/imgsForReadMe/recadrage.jpg)
+- A window appears with the first frame of your video. Select the area of interest like [this example : ](https://github.com/linaleguellec/BeeDeckBot/blob/main/imgsForReadMe/recadrage.jpg)
 - Press enter when you are sure of your zone selection. 
-- The window will disappear and a ![second window](https://github.com/linaleguellec/BeeDeckBot/blob/main/imgsForReadMe/separation.jpg) will be opened. It's the first cropped image of your video. 
+- The window will disappear and a [second window](https://github.com/linaleguellec/BeeDeckBot/blob/main/imgsForReadMe/separation.jpg) will be opened. It's the first cropped image of your video. 
 - Delimit the upper and lower parts of the flight chamber by clicking on the metal bar separating the 2 parts (as shown in this example). The upper part is the image reflected by the mirror.  
 - When you are sure of your boundary, press enter.  
 - Tracking's calculations will begin. At the end of the calculations, graphics and 3D animation of the bee's trajectory will appear. You can press escape at any time if the calculation time is too long. In this case, the trajectory shown on the final graph will be only a part of the entire trajectory.
