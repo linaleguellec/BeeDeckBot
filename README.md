@@ -2,7 +2,7 @@
 I completed this project as part of my final year internship as a general engineer specializing in mechanical engineering. 
 The aim of the project is to use a single camera to shoot 3D images of bees landing on a moving robotic flower. For more details on the background to this project, please consult my internship report. 
 
-# File organization
+# Folders organization
 - beeTracking  : all the algorithms for post-processing the videos (tracing the bee's 3D trajectory from a video in mp4 format). 
 - MotorControl : arduino algorithms for motor control.
 - robotCAD : the complete digital model of the steel structure in both SolidWorks and STEP formats. 
