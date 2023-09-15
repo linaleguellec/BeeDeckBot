@@ -1,20 +1,19 @@
-# object-tracking-yolov8-deep-sort
+# Sources 
 
-Yolov8 object detection + deep sort object tracking !
+I took inspiration from [this project](https://github.com/computervisioneng/object-tracking-yolov8-deep-sort.git). 
 
-[![Watch the video](https://img.youtube.com/vi/jIRRuGN0j5E/0.jpg)](https://www.youtube.com/watch?v=jIRRuGN0j5E)
+This project tracks objects using YOLOv8 for identification and deepSort for trajectory tracking. 
+My project tracks bees using deepSort but not YOLOv8. 
+So I took the structure of this project and replaced the YOLOv8 part of my own method of bee identification. 
 
-## requirements
+      
+# Deep Sort
 
-- Python 3.7
-- requirements.txt
+The developer of [this project](https://github.com/computervisioneng/object-tracking-yolov8-deep-sort.git) is working on [this fork](https://github.com/computervisiondeveloper/deep_sort) from deep sort official implementation.
 
-## Deep Sort
 
-We are working on [this fork](https://github.com/computervisiondeveloper/deep_sort) from deep sort official implementation.
+# The main problems with my algorithms 
 
-You can download deep sort feature extraction model [here](https://drive.google.com/open?id=18fKzfqnqhqW3s9zwsCbnVJ5XF2JFeqMp).
+# How to improve my algorithms ?  
 
-## data
 
-You can download the same data I use in the video [here](https://drive.google.com/drive/folders/18srgGIoavKutQ2MDu_d8flAlOW-aDsAG?usp=share_link).
