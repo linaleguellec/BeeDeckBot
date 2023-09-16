@@ -9,7 +9,6 @@ The aim of the project is to use a single camera to shoot 3D images of bees land
 - technicalDocumentation : all technical documentation (Dynamixel Servomotors, RFID gate ... ). 
 - videos : examples of videos taken with the metal structure. The quality of the videos has been reduced to being stored on GitHub.
 - results : a summary video of an example of possible results. The quality of the videos has been reduced to being stored on GitHub. 
-- 
 
 # Comments  
 
@@ -17,7 +16,7 @@ The aim of the project is to use a single camera to shoot 3D images of bees land
 
 Folders "beeTracking" is not yet powerful enough to be used directly in your projects. I therefore advise you to use them as a first step in your research. 
 
-# equipment to purchase 
+# Equipment to purchase 
 - [a cart](https://www.manutan.fr/fr/maf/table-roulante-noire-2-plateaux-capacite-150-kg-a688743)
 - [an RFID door](https://www.microsensys.de/en/solutions/small-animals-identification/)
 - [a camera that films at 500 fps](https://www.back-bone.ca/rx0-mod/)
