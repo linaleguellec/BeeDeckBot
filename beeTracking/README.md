@@ -45,6 +45,6 @@ The developer of [this project](https://github.com/computervisioneng/object-trac
 - For the twisted mirror and perspective problem, one way of improving the image is to perform a 3D camera calibration. 3D calibration will correct problems of scale and distortion. 
 - To avoid detection errors, one possible improvement is to replace the current bee detection method (background subtraction) with a bee identification method based on artificial intelligence with YOLOv8 and always keeping strongSort.  I tested this method using the YOLOv8 test file. It works well for people detection and tracking.  All we need to do now is to replace YOLOv8's learnt models, adapted to people recognition, with a personalized model adapted to the recognition of our bees. 
 
-![](https://github.com/linaleguellec/BeeDeckBot/blob/main/imgsForReadMe/recadrage.jpg)
+
 
 
