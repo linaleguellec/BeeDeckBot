@@ -7,7 +7,7 @@ Once the metal structure has been assembled, install all the electronic circuits
 
 ## Electronics 
 Here's the real and theoretical electronic circuit. I've placed the integrated switch of the RFID port and the manual switch in parallel. In this way, the motors of the robotic flower can be controlled either manually by the manual switch, or automatically by the RFID door switch. 
-![](https://github.com/linaleguellec/BeeDeckBot/blob/main/imgsForReadMe/shemaElec.png)
+![](https://github.com/linaleguellec/BeeDeckBot/blob/main/imgsForReadMe/schemaElec.png)
 ![](https://github.com/linaleguellec/BeeDeckBot/blob/main/imgsForReadMe/elecGlobale.jpeg)
 ![](https://github.com/linaleguellec/BeeDeckBot/blob/main/imgsForReadMe/elecZoom.jpeg)
 
