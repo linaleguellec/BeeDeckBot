@@ -18,4 +18,4 @@
 
 # Robotic flower assembly guide 
  
-![](https://github.com/linaleguellec/BeeDeckBot/blob/main/imgsForReadMe/recadrage.jpg)
+![](https://github.com/linaleguellec/BeeDeckBot/blob/main/imgsForReadMe/etape1_2.jpg)
